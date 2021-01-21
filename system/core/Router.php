@@ -1,11 +1,22 @@
 <?php
-
+namespace system\core;
 
 class Router
 {
+    /**
+     * table of routers
+     * @var array
+     */
 public static $routers = [];
+    /**
+     * Current route
+     * @var array
+     */
 public  static $route = [];
 
+    /**
+     * @param $route
+     */
 public static function add($route)
 {
     foreach ($route as $k => $val) {
@@ -14,7 +25,9 @@ public static function add($route)
 }
 public static function checkRoute($url)
 {
+    $url = self::removeQueryString($url);
     foreach (self::$routers as $k => $val){
+
         if (preg_match("#$k#i", $url, $matches)){
 
            // pr($val);
@@ -29,6 +42,7 @@ public static function checkRoute($url)
           if (!isset($route['action'])){
               $route['action'] = 'index';
           }
+
             self::$route = $route;
           return true;
         }
@@ -40,14 +54,29 @@ public static function dispatch($path)
 if (self::checkRoute($path)){
     $controller = '\app\controllers\\' . self::$route['controller'] . 'Controller';
     if (class_exists($controller)){
-        $obj = new $controller;
+
+
+        $obj = new $controller(self::$route);
+        $action = self::lStr(self::$route['action']) . 'Action';
+        //pr($action);
+        if (method_exists($obj, $action)){
+        $obj->$action();
+        }else{
+            echo 'Метод ' . $action . ' не найден';
+        }
     }else{
         echo  'Контроллер ' . $controller . ' не найден';
     }
 }else{
-    echo  '404';
+    http_response_code(404);
+    include '404.html';
 }
       }
+
+    /**
+     * @param $str
+     * @return string|string[]
+     */
       private static function uStr($str)
       {
           $str = str_replace('-', ' ', $str);
@@ -56,5 +85,26 @@ if (self::checkRoute($path)){
           pr($str);
           return $str;
       }
+private static function lStr($str){
+   return lcfirst(self::uStr($str));
+}
 
+    /**
+     * удаляет явные GET параметры
+     * @param $url
+     * @return mixed|string
+     */
+private static function removeQueryString($url)
+{
+    if ($url != ''){
+      $params = explode('&', $url);
+      if (strpos($params[0], '=') === false){
+          return $params[0];
+      }else{
+          return '';
+      }
+    }
+
+   return $url;
+}
 }
