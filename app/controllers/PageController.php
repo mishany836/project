@@ -8,21 +8,17 @@ use system\core\Controller;
 
 class PageController extends Controller
 {
-public function __construct()
-{
-echo 'Page';
-}
 
     public function indexAction()
     {
-        echo 'Page::index';
+        //echo 'Page::index';
     }
     public function testNewAction()
     {
-        echo 'Page::testNew';
+        //echo 'Page::testNew';
     }
     public function testAction()
     {
-        echo 'Page:test';
+       // echo 'Page:test';
     }
 }

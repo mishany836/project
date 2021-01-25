@@ -1,1 +1,1 @@
-<?php
+Это page - index

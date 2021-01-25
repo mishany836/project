@@ -1,1 +1,4 @@
-<?php
+<?=$name?>
+<?
+pr($arArray);
+?>

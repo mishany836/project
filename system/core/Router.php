@@ -58,9 +58,10 @@ if (self::checkRoute($path)){
 
         $obj = new $controller(self::$route);
         $action = self::lStr(self::$route['action']) . 'Action';
-        //pr($action);
+
         if (method_exists($obj, $action)){
         $obj->$action();
+        $obj->getView();
         }else{
             echo 'Метод ' . $action . ' не найден';
         }
@@ -82,7 +83,6 @@ if (self::checkRoute($path)){
           $str = str_replace('-', ' ', $str);
           $str = ucwords($str);
           $str = str_replace(' ', '', $str);
-          pr($str);
           return $str;
       }
 private static function lStr($str){
