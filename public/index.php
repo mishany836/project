@@ -34,4 +34,4 @@ Router::add(['^(?P<controller>[a-z0-9-]+)/?(?P<action>[a-z0-9-]+)?$' => []]);
 
 //pr(Router::$routers);
 Router::dispatch($qStr);
-
+pr(\system\core\Db::$queries);

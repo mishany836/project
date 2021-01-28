@@ -53,6 +53,11 @@ public static function dispatch($path)
     {
 if (self::checkRoute($path)){
     $controller = '\app\controllers\\' . self::$route['controller'] . 'Controller';
+
+
+   // echo $controller;
+
+
     if (class_exists($controller)){
 
 
