@@ -3,15 +3,25 @@
 
 class Router
 {
-public static $routers = [];
-public  static $route = [];
+public static $routers = []; // таблица маршрутов
+public  static $route = []; // текущий маршрут
 
+    /**
+     *  добавляет маршрут в данную таблицу маршрутов
+     * @param $route
+     */
 public static function add($route)
 {
     foreach ($route as $k => $val) {
         self::$routers[$k] = $val;
     }
 }
+
+    /**
+     *  метод проверяет совпадения с таблицей маршрутов
+     * @param $url - адресная строка
+     * @return bool
+     */
 public static function checkRoute($url)
 {
     foreach (self::$routers as $k => $val){
@@ -35,10 +45,14 @@ public static function checkRoute($url)
     }
     return false;
 }
+
+    /**
+     * @param $path
+     */
 public static function dispatch($path)
     {
 if (self::checkRoute($path)){
-    $controller = '\app\controllers\\' . self::$route['controller'] . 'Controller';
+    $controller = '\app\controllers\\' .  self::$route['controller'] . 'Controller';
     if (class_exists($controller)){
         $obj = new $controller;
     }else{
@@ -48,6 +62,12 @@ if (self::checkRoute($path)){
     echo  '404';
 }
       }
+
+    /**
+     * преобразует строку в нужный для нас вид
+     * @param $str
+     * @return mixed|string
+     */
       private static function uStr($str)
       {
           $str = str_replace('-', ' ', $str);

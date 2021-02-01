@@ -4,9 +4,9 @@ require_once '../system/core/Router.php';
 require_once '../app/controllers/MainController.php';
 require_once '../app/controllers/PageController.php';
 
+use \app\controllers\MainController;
 
-
-$o = new \app\controllers\MainController;
+$o = new \app\controllers\MainController();
 $qStr = $_SERVER['QUERY_STRING'];
 
 
@@ -18,6 +18,7 @@ $qStr = $_SERVER['QUERY_STRING'];
 
 Router::add(['^$'=> ['controller' => 'Main', 'action' => 'index']]);
 Router::add(['^(?P<controller>[a-z0-9-]+)/?(?P<action>[a-z0-9-]+)?$' => []]);
+
 pr(Router::$routers);
 Router::dispatch($qStr);
-
+//pr(Router::$route);
