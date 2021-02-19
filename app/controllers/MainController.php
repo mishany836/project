@@ -1,33 +1,17 @@
 <?php
 namespace app\controllers;
 use app\models\News;
-use system\core\Controller;
 
-class MainController extends Controller
+
+class MainController extends AppController
 {
 
-    public $layout = 'main';
     public function indexAction()
     {
-        $news = new News();
-        $arNews = $news->findOne("Текст новости 3", 'text');
-        pr($arNews);
-        $this->view = 'test';
-        $arr = [
-            'n1' => 1,
-            'n2' => 2
-        ];
+    $news = new News();
+    $arNews = $news->findAll();
 
-        //echo 'News::index';
-       // $this->view = 'test';
-        $this->setVars(['name' => 'vasya', 'arArray' => $arr]);
+    $this->setVars(['news' => $arNews]);
     }
-    public function testAction()
-    {
-        //echo 'News::test';
-    }
-    public function check()
-    {
 
-    }
 }

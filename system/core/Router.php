@@ -39,6 +39,10 @@ public static function checkRoute($url)
               $route['action'] = 'index';
           }
 
+          if (!isset($route['prefix'])){
+              $route['prefix'] = '';
+          }
+          //pr($route);
             self::$route = $route;
           return true;
         }
@@ -50,7 +54,7 @@ public static function dispatch($path)
     {
 if (self::checkRoute($path)){
 
-    $controller = '\app\controllers\\' .  self::$route['controller'] . 'Controller';
+    $controller = '\app\controllers\\' .self::$route['prefix'] . self::$route['controller'] . 'Controller';
 
    // echo $controller;
 
@@ -61,8 +65,12 @@ if (self::checkRoute($path)){
         $obj = new $controller(self::$route);
         $action = self::lStr(self::$route['action']) . 'Action';
 
-        if (method_exists($obj, $action)){
-        $obj->$action();
+        if (method_exists($obj, $action)) {
+            if (isset(self::$route['id'])) {
+                $obj->$action(self::$route['id']);
+            } else {
+            $obj->$action();
+            }
         $obj->getView();
         }else{
             echo 'Метод ' . $action . ' не найден';
